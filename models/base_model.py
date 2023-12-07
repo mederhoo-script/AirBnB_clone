@@ -2,15 +2,39 @@
 """ BaseModel that define all common attribute/methods for other claseese"""
 import uuid
 from datetime import datetime
+import models
 
 
 class BaseModel:
     """ parent class"""
 
-    def __init__(self):
-        self.id = str(uuid.uuid4())
-        self.created_at = datetime.now()
-        self.updated_at = self.created_at
+    def __init__(self, *args, **kwargs):
+        if kwargs:
+            time_iso = '%Y-%m-%dT%H:%M:%S.%f'
+            # Check if '__class__' key is present and remove it
+            if '__class__' in kwargs:
+                kwargs.pop('__class__')
+
+            """Convert 'created_at' and 'updated_at'
+            strings to datetime objects"""
+            if 'created_at' in kwargs:
+                time_obj_c = datetime.strptime(kwargs['created_at'], time_iso)
+                kwargs['created_at'] = time_obj_c
+
+            if 'updated_at' in kwargs:
+                time_obj_u = datetime.strptime(kwargs['updated_at'], time_iso)
+                kwargs['updated_at'] = time_obj_u
+
+            # Assign each key-value pair from kwargs to instance attributes
+            for key, value in kwargs.items():
+                setattr(self, key, value)
+        else:
+            self.id = str(uuid.uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
+
+             # Add the new instance to storage
+            models.storage.new(self)
 
     def __str__(self):
         class_name = self.__class__.__name__
@@ -21,6 +45,8 @@ class BaseModel:
 
     def save(self):
         self.updated_at = datetime.now()
+         # Call save(self) method of storage
+        models.storage.save()
 
     def to_dict(self):
         # Create a copy of the instance's __dict__
