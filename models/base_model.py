@@ -33,8 +33,8 @@ class BaseModel:
             self.updated_at = datetime.now()
 
             # Add the new instance to storage
-            import models
-            models.storage.new(self)
+        import models
+        models.storage.new(self)
 
     def __str__(self):
         class_name = self.__class__.__name__
