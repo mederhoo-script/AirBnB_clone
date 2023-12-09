@@ -33,7 +33,7 @@ class BaseModel:
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
 
-             # Add the new instance to storage
+            # Add the new instance to storage
             models.storage.new(self)
 
     def __str__(self):
@@ -45,7 +45,7 @@ class BaseModel:
 
     def save(self):
         self.updated_at = datetime.now()
-         # Call save(self) method of storage
+        # Call save(self) method of storage
         models.storage.save()
 
     def to_dict(self):
