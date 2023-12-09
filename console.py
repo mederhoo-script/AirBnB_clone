@@ -8,20 +8,20 @@ from models.base_model import BaseModel
 
 class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
-    
+
     def do_quit(self, line):
         """Quit command to exit the program"""
         return True
-    
+
     def do_EOF(self, line):
         """EOF end of file then exit"""
         print()
         return True
-    
+
     def emptyline(self):
         """do nothing when empty line pass"""
         pass
-    
+
     def do_create(self, line):
         """creating a new instance of BaseModel"""
         if not line:
@@ -41,14 +41,14 @@ class HBNBCommand(cmd.Cmd):
         if not line:
             print("** class name missing **")
             return
-        
+
         try:
             lines = line.split()
             clsObj = globals()[lines[0]]
             if len(lines) < 2:
                 print("** instance id missing **")
                 return
-            
+
             newInstance = clsObj()
             instance_id = lines[1]
             key = f"{lines[0]}.{lines[1]}"
@@ -72,7 +72,6 @@ class HBNBCommand(cmd.Cmd):
             if len(lines) < 2:
                 print("** instance id missing **")
                 return
-            
 
             newInstance = clsObj()
             instance_id = lines[1]
@@ -85,7 +84,7 @@ class HBNBCommand(cmd.Cmd):
                 print("** no instance found **")
         except KeyError:
             print("** class doesn't exist **")
-            
+
     def do_all(self, line):
         """show all string representation of all instance
         based or not based on the class"""
@@ -137,6 +136,7 @@ class HBNBCommand(cmd.Cmd):
             obj.save()
         except KeyError:
             print("** class doesn't exist **")
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
