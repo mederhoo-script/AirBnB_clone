@@ -27,12 +27,12 @@ class FileStorage:
             json.dump(serialized_objects, file)
 
     def reload(self):
+        data = {}
+        cls = {
+            "BaseModel": BaseModel,
+            "User": User
+        }
         try:
-            data = {}
-            cls = {
-                "BaseModel": BaseModel,
-                "User": User
-            }
             with open(self.__file_path, 'r') as file:
                 data = json.load(file)
                 for key, value in data.items():

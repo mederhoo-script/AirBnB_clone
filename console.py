@@ -29,7 +29,8 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
         try:
-            cls_obj = globals()[line]
+            lines = line.split()
+            cls_obj = globals()[lines[0]]
             new_instance = cls_obj()
             new_instance.save()
             print(new_instance.id)
@@ -80,7 +81,7 @@ class HBNBCommand(cmd.Cmd):
             objDIct = storage.all()
             if key in objDIct:
                 del objDIct[key]
-                storage.save
+                storage.save()
             else:
                 print("** no instance found **")
         except KeyError:
@@ -100,7 +101,8 @@ class HBNBCommand(cmd.Cmd):
             return
 
         try:
-            cls_obj = globals()[line]
+            lines = line.split()
+            clsObj = globals()[lines[0]]
             for key, value in objDict.items():
                 objList.append(str(value))
             print(objList)
@@ -115,22 +117,29 @@ class HBNBCommand(cmd.Cmd):
         try:
             lines = line.split()
             cls_obj = globals()[lines[0]]
+
             if len(lines) < 2:
                 print("** instance id missing **")
                 return
+
             instance_id = lines[1]
             key = "{}.{}".format(lines[0], instance_id)
             obj_dict = storage.all()
+
             if key not in obj_dict:
                 print("** no instance found **")
                 return
+
             if len(lines) < 3:
                 print("** attribute name missing **")
                 return
+
             attr_name = lines[2]
+
             if len(lines) < 4:
                 print("** value missing **")
                 return
+    
             attr_value = lines[3]
             obj = obj_dict[key]
             setattr(obj, attr_name, attr_value)
