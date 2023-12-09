@@ -2,6 +2,7 @@
 """file storage that serialize instance to a JSON"""
 import json
 from models.base_model import BaseModel
+from models.user import User
 
 
 class FileStorage:
@@ -29,7 +30,8 @@ class FileStorage:
         try:
             data = {}
             cls = {
-                "BaseModel": BaseModel
+                "BaseModel": BaseModel,
+                "User": User
             }
             with open(self.__file_path, 'r') as file:
                 data = json.load(file)
