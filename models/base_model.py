@@ -15,26 +15,12 @@ class BaseModel:
         self.updated_at = datetime.now()
 
         if len(kwargs) != 0:
-            # Check if '__class__' key is present and remove it
-            if '__class__' in kwargs:
-                kwargs.pop('__class__')
-
-            """Convert 'created_at' and 'updated_at'
-            strings to datetime objects"""
-            if 'created_at' in kwargs:
-                time_obj_c = datetime.strptime(kwargs['created_at'], time_iso)
-                kwargs['created_at'] = time_obj_c
-
-            if 'updated_at' in kwargs:
-                time_obj_u = datetime.strptime(kwargs['updated_at'], time_iso)
-                kwargs['updated_at'] = time_obj_u
-
             # Assign each key-value pair from kwargs to instance attributes
             for key, value in kwargs.items():
                 if key == "created_at" or key == "updated_at":
                     self.__dict__[key] = datetime.strptime(value, time_iso)
                 else:
-                    setattr(self, key, value)
+                    self.__dict__[key] = value
         else:
             
             # Add the new instance to storage
