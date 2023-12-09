@@ -14,7 +14,7 @@ class BaseModel:
         self.created_at = datetime.now()
         self.updated_at = datetime.now()
 
-        if kwargs:
+        if len(kwargs) != 0:
             # Check if '__class__' key is present and remove it
             if '__class__' in kwargs:
                 kwargs.pop('__class__')
@@ -40,13 +40,6 @@ class BaseModel:
             # Add the new instance to storage
             models.storage.new(self)
 
-    def __str__(self):
-        class_name = self.__class__.__name__
-        i_d = self.id
-        dic = self.__dict__
-
-        return "[{}] ({}) {}".format(class_name, i_d, dic)
-
     def save(self):
         self.updated_at = datetime.now()
         # Call save(self) method of storage
@@ -70,3 +63,11 @@ class BaseModel:
 
         # Return the resulting dictionary
         return obj_dict
+    
+    def __str__(self):
+        class_name = self.__class__.__name__
+        i_d = self.id
+        dic = self.__dict__
+
+        return "[{:s}] ({:s}) {}".format(class_name, i_d, dic)
+
