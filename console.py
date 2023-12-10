@@ -15,6 +15,10 @@ from models.review import Review
 class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
 
+    __classes = [
+        'BaseModel', 'User', 'State', 'City', 'Amenity', 'Place', 'Review'
+        ]
+
     def do_quit(self, line):
         """Quit command to exit the program"""
         return True
@@ -44,7 +48,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_show(self, line):
         """showing the string represent of an instance
-        based on the classn name"""
+        based on the class name"""
         if not line:
             print("** class name missing **")
             return
@@ -164,6 +168,19 @@ class HBNBCommand(cmd.Cmd):
         except KeyError:
             print("** class doesn't exist **")
 
+
+    def do_count(self, arg):
+        """Instance counter according to class"""
+        args = arg.split(" ")
+        if arg not in self.__classes:
+            print("** class doesn't exist **")
+        else:
+            list_new = []
+            list_dictionary = storage.all()
+            for key, value in list_dictionary.items():
+                if args[0] in key:
+                    list_new.append(value)
+            print(len(list_new))
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
