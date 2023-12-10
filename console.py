@@ -105,17 +105,66 @@ class HBNBCommand(cmd.Cmd):
         if "." in line:
             lines = line.split(".")
 
+            if "{" in lines[1]:
+                    lines[1] = lines[1].replace("{", "")
+
+            if "}" in lines[1]:
+                lines[1] = lines[1].replace("}", "")
+
+
             if '"' in lines[1]:
-                lines[1] = lines[1].split('"')
-                comd = f"{lines[1][0]} {lines[0]} {lines[1][1]}"
-                if lines[1][1]:   
+                lines[1] = lines[1].replace('"', " ")
+
+                if "'" in lines[1]:
+                    lines[1] = lines[1].replace("'", " ")
+
+                if "," in lines[1]:
+                    lines[1] = lines[1].replace(",", "")
+
+                if ":" in lines[1]:
+                    lines[1] = lines[1].replace(":", "")
+
+                lines[1] = lines[1].split()
+
+                if len(lines[1]) > 5:
+                    li3to5 = f"{lines[1][3]} {lines[1][4]} {lines[1][5]}"
+                    comd = f"{lines[1][0]} {lines[0]} {lines[1][1]} {lines[1][2]} {li3to5}"
+                    return super().precmd(comd)
+
+                elif len(lines[1]) > 3:
+                    comd = f"{lines[1][0]} {lines[0]} {lines[1][1]} {lines[1][2]} {lines[1][3]}"
+                    return super().precmd(comd)
+
+                elif lines[1][1]:
+                    comd = f"{lines[1][0]} {lines[0]} {lines[1][1]}"   
                     print(f"line ; {line} str: {str} out: {lines}")
                     return super().precmd(comd)
 
             if "'" in lines[1]:
-                lines[1] = lines[1].split("'")
-                comd = f"{lines[1][0]} {lines[0]} {lines[1][1]}"
-                if lines[1][1]:   
+                lines[1] = lines[1].split("'", " ")
+
+                if '"' in lines[1]:
+                    lines[1] = lines[1].replace('"', " ")
+
+                if "," in lines[1]:
+                    lines[1] = lines[1].replace(",", "")
+
+                if ":" in lines[1]:
+                    lines[1] = lines[1].replace(":", "")
+
+
+                lines[1] = lines[1].split()
+                if len(lines[1]) > 5:
+                    li3to5 = f"{lines[1][3]} {lines[1][4]} {lines[1][5]}"
+                    comd = f"{lines[1][0]} {lines[0]} {lines[1][1]} {lines[1][2]} {li3to5}"
+                    return super().precmd(comd)
+
+                elif len(lines[1]) > 3:
+                    comd = f"{lines[1][0]} {lines[0]} {lines[1][1]} {lines[1][2]} {lines[1][3]}"
+                    return super().precmd(comd)
+
+                elif lines[1][1]:
+                    comd = f"{lines[1][0]} {lines[0]} {lines[1][1]}"   
                     print(f"line ; {line} str: {str} out: {lines}")
                     return super().precmd(comd)
                     
@@ -205,6 +254,11 @@ class HBNBCommand(cmd.Cmd):
             attr_value = lines[3]
             obj = obj_dict[key]
             setattr(obj, attr_name, attr_value)
+            if len(lines) > 5:
+                attr_age = lines[4]
+                attr_age_value = lines[5]
+
+                setattr(obj, attr_age, attr_age_value)
             obj.save()
         except KeyError:
             print("** class doesn't exist **")
