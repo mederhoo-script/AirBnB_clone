@@ -92,27 +92,39 @@ class HBNBCommand(cmd.Cmd):
         except KeyError:
             print("** class doesn't exist **")
 
+    def precmd(self, line):
+        if "(" in line:
+            line = line.replace("(", "")
+        if ")" in line:
+            line = line.replace(")", "")
+
+        if "." in line:
+            lines = line.split(".")
+            print(f"line ; {line} str: {str} out: {lines}")
+            comd = f"{lines[1]} {lines[0]}"
+            return super().precmd(comd)
+        else:
+            return super().precmd(line)
+    
     def do_all(self, line):
         """show all string representation of all instance
         based or not based on the class"""
 
-        objDict = storage.all()
         objList = []
-
-        if not line:
-            for key, value in objDict.items():
-                objList.append(str(value))
-            print(objList)
-            return
-
         try:
             lines = line.split()
-            clsObj = globals()[lines[0]]
-            for key, value in objDict.items():
-                objList.append(str(value))
+            if not lines:
+                for key, value in storage.all().items():
+                    objList.append(str(value))
+            else:
+                clsObj = globals()[lines[0]]
+                for key, value in storage.all().items():
+                    if isinstance(value, clsObj):
+                        objList.append(str(value))
             print(objList)
         except KeyError:
             print("** class doesn't exist **")
+
 
     def do_update(self, line):
         """Updates an instance based on the class name and id"""
